@@ -1,0 +1,20 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "971173962970596",
+            "APP_NAME": "Explore",
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        }
+    },
+    "dependent_plugins": {}
+}

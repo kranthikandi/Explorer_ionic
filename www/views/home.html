@@ -1,0 +1,37 @@
+<ion-view class="home-view">
+  <ion-nav-title>
+    <span>Facebook Login Example</span>
+  </ion-nav-title>
+  <ion-content class="has-header padding">
+    <div class="row">
+      <div class="col">
+        <h3 class="welcome-message">Hi {{user.name}}</h3>
+       <!--  <p class="welcome-message">You have logged in with Facebook</p>
+        <img ng-src="{{user.picture}}">
+        <a class="button button-assertive button-block button-outline" ng-click="showLogOutMenu()">
+          Log Out
+        </a> -->
+        <input type="text" ng-model="city" class="tftextinput" name="q" style="font-family: Arial, Helvetica, sans-serif;font-size:14px;border:1px solid #0076a3; border-right:0px;border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;" size="21" maxlength="120"  id= "city"/>
+<button type="button" ng-click="loginn()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
+                search
+            </button>
+                </div>
+    </div>
+    <div  class="list card">
+      <div ng-repeat="pageData in pageDatas" class="item item-avatar">
+        <h2>{{pageData.name}}</h2>
+      </div>
+    </div>
+  </ion-content>
+
+  
+
+
+
+
+  
+  
+      
+
+</ion-view>
