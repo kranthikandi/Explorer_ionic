@@ -1,6 +1,10 @@
 angular.module('controllers', [])
 
-.controller('WelcomeCtrl', function($scope,$state, $q, UserService, $ionicLoading) {
+.run(function($rootScope) {
+    $rootScope.aToken = "token";
+})
+
+.controller('WelcomeCtrl', function($scope,$rootScope, $state, $q, UserService, $ionicLoading) {
 
   //This is the success callback from the login method
   var fbLoginSuccess = function(response) {
@@ -9,7 +13,8 @@ angular.module('controllers', [])
       return;
     }
 
-    $scope.authResponse = response.authResponse;
+    $Scope.authResponse = response.authResponse;
+    
     getFacebookProfileInfo(authResponse)
     .then(function(profileInfo) {
       //for the purpose of this example I will store user data on local storage
@@ -113,7 +118,7 @@ angular.module('controllers', [])
 
 })
 
-.controller('HomeCtrl', function($scope,UserService, $ionicActionSheet, $state, $ionicLoading,$http){
+.controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
 	$scope.user = UserService.getUser();
   $scope.loginn = function() {
     var city = $scope.city;
@@ -144,11 +149,17 @@ function refresh() {
     var lng=$scope.lng;
     $scope.pageDatas = [];
     $scope.pageData = [];
-    var tokens= "CAACEdEose0cBAF8ZAN4zoFeErflg70hDoCCv2dacxLZBVWhRQ7qQRA3XwUFGZCDH9T3diCFu8wTuZCajYd9mapK5GnxwYGfnyIzn2dWKiDkwHZB0ZCEEsF75XogDZA5GZCtXNpfK8dpd0Q13uxnDB8TC46N2xLMNLwqrdgAib3tZCnTxxdVDX9oYRn6XjNmW2S95AbfR6W9RTFFdjXnPZCMmlx";
-     
-            $http.get("https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q=houston&center=37.7749,-122.4194&distance=10000", { params: { access_token: tokens,  format: "json" }}).then(function(result) {
-                console.log(result);
-                
+    //alert($rootScope.aToken);
+    //var aToken= "CAACEdEose0cBAP6wwB07EQdPqZArqfK3xSoyDVeLQFzy2WkyIxGAuFxLN7f96P3fJGiIAIqvcV4w0Y1KZBjcZA2MhM1owtH25c2lUeGIqow0ZB3XBgbj347wxWZBtyPzfG2NtHV1T9KM3JX9mBBAZBnA99rTr7hWhyFOvUGd9UTYU2v2ZCIueqzsvgyLAajBxXxfrknV4CB4laYtgeCPywn";
+            
+facebookConnectPlugin.getLoginStatus(function(success){
+     if(success.status === 'connected'){
+     // alert(success.authResponse+" "+ success.status );
+      console.log("new sucess-- "+success.authResponse.accessToken);
+
+      $scope.aToken = success.authResponse.accessToken;
+      $http.get("https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q=san francisco&center=37.7749,-122.4194&distance=10000", { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
+      console.log(result);
         result.data.data.sort(function(a,b){
          var aa=a.were_here_count;
          var bb=b.were_here_count;
@@ -172,11 +183,17 @@ function refresh() {
           });
        }
       $scope.pageDatas=listdata;
-      console.log($scope.pageDatas);
+     // console.log($scope.pageDatas);
             }, function(error) {
                 alert("There was a problem getting your profile.  Check the logs for details.");
                 console.log(error);
             });
+     }
+   });
+
+
+
+
   }
 
 	$scope.showLogOutMenu = function() {
