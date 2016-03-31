@@ -120,19 +120,24 @@ angular.module('controllers', [])
 
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
 	$scope.user = UserService.getUser();
-  $scope.loginn = function() {
-    var city = $scope.city;
+  $scope.loginn = function(text) {
+    //alert(text.city);
+    $scope.city = text.city;
       $scope.pageDatas = [];
     $scope.pageData = []; 
  getLatLng();
   }
     function getLatLng(){
-   $http.get("http://maps.google.com/maps/api/geocode/json?address=san francisco&sensor=false").success(function(mapData) {
+   $http.get("http://maps.google.com/maps/api/geocode/json?address="+$scope.city+"&sensor=false").success(function(mapData) {
         angular.extend($scope, mapData);
         if(mapData.status == "OK"){
+          console.log(mapData);
         var lat = mapData.results[0].geometry.location.lat;
         var lng = mapData.results[0].geometry.location.lng;
         console.log(lat+", "+lng);
+        var sState = mapData.results[0].address_components[2].short_name;
+        var lState = mapData.results[0].address_components[2].long_name;
+        
         $scope.lat = lat;
         $scope.lng = lng;
         refresh();
@@ -158,7 +163,9 @@ facebookConnectPlugin.getLoginStatus(function(success){
       console.log("new sucess-- "+success.authResponse.accessToken);
 
       $scope.aToken = success.authResponse.accessToken;
-      $http.get("https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q=san francisco&center=37.7749,-122.4194&distance=10000", { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
+      alert (url);
+      $http.get(url, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
       console.log(result);
         result.data.data.sort(function(a,b){
          var aa=a.were_here_count;
@@ -168,6 +175,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
         var data = result.data.data;
        var listdata = [];
        for (var i=0; i<data.length;i++){
+        if($scope.city == data[i].location.city){
         listdata.push({
           wereAbt: data[i].were_here_count,
           id: data[i].id,
@@ -181,7 +189,10 @@ facebookConnectPlugin.getLoginStatus(function(success){
           likes:data[i].likes,
           link:data[i].link
           });
+      }else{
+       // alert(data[i].location.city);
        }
+      }
       $scope.pageDatas=listdata;
      // console.log($scope.pageDatas);
             }, function(error) {

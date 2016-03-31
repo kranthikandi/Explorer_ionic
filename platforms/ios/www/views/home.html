@@ -11,11 +11,13 @@
         <a class="button button-assertive button-block button-outline" ng-click="showLogOutMenu()">
           Log Out
         </a> -->
-        <input type="text" ng-model="city" class="tftextinput" name="q" style="font-family: Arial, Helvetica, sans-serif;font-size:14px;border:1px solid #0076a3; border-right:0px;border-top-left-radius: 5px 5px;
+        <form ng-submit="loginn(text)">
+        <input type="text" ng-model="text.city" class="tftextinput" name="q" style="font-family: Arial, Helvetica, sans-serif;font-size:14px;border:1px solid #0076a3; border-right:0px;border-top-left-radius: 5px 5px;
     border-bottom-left-radius: 5px 5px;" size="21" maxlength="120"  id= "city"/>
-<button type="button" ng-click="loginn()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
+<button type="button" ng-click="loginn(text)" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
                 search
             </button>
+            </form>
                 </div>
     </div>
     <div  class="list card">
