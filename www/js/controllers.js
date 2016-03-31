@@ -162,13 +162,10 @@ function refresh() {
     //var aToken= "CAACEdEose0cBAP6wwB07EQdPqZArqfK3xSoyDVeLQFzy2WkyIxGAuFxLN7f96P3fJGiIAIqvcV4w0Y1KZBjcZA2MhM1owtH25c2lUeGIqow0ZB3XBgbj347wxWZBtyPzfG2NtHV1T9KM3JX9mBBAZBnA99rTr7hWhyFOvUGd9UTYU2v2ZCIueqzsvgyLAajBxXxfrknV4CB4laYtgeCPywn";
             
 facebookConnectPlugin.getLoginStatus(function(success){
-     if(success.status === 'connected'){
-     // alert(success.authResponse+" "+ success.status );
-      console.log("new sucess-- "+success.authResponse.accessToken);
-
+     if(success.status === 'connected'){ 
+      console.log("new sucess-- "+success.authResponse.accessToken); 
       $scope.aToken = success.authResponse.accessToken;
       var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
-      alert (url);
       $http.get(url, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
       console.log(result);
         result.data.data.sort(function(a,b){
@@ -193,14 +190,12 @@ facebookConnectPlugin.getLoginStatus(function(success){
           likes:data[i].likes,
           link:data[i].link
           });
-      }else{
-        alert("i value"+ i+"----"+data[i].location.city+" Name ---"+ data[i].name);
+      }else{ 
        }
       }
-      $scope.pageDatas=listdata;
-     // console.log($scope.pageDatas);
+      $scope.pageDatas=listdata; 
             }, function(error) {
-                alert("There was a problem getting your profile.  Check the logs for details.");
+                alert("There was a problem getting your profile. ");
                 console.log(error);
             });
      }
