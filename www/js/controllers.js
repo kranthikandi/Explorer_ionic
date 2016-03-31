@@ -132,14 +132,18 @@ angular.module('controllers', [])
         angular.extend($scope, mapData);
         if(mapData.status == "OK"){
           console.log(mapData);
-        var lat = mapData.results[0].geometry.location.lat;
-        var lng = mapData.results[0].geometry.location.lng;
-        console.log(lat+", "+lng);
-        var sState = mapData.results[0].address_components[2].short_name;
-        var lState = mapData.results[0].address_components[2].long_name;
-        
-        $scope.lat = lat;
-        $scope.lng = lng;
+        $scope.lat = mapData.results[0].geometry.location.lat;
+        $scope.lng = mapData.results[0].geometry.location.lng;
+        //console.log(lat+", "+lng);
+        if(mapData.results[0].address_components.length == 4){
+        $scope.sState = mapData.results[0].address_components[2].short_name;
+        $scope.lState = mapData.results[0].address_components[2].long_name;
+        alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }else if(mapData.results[0].address_components.length == 3){
+        $scope.sState = mapData.results[0].address_components[1].short_name;
+        $scope.lState = mapData.results[0].address_components[1].long_name;
+        alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }
         refresh();
     }else{
     }
@@ -175,7 +179,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
         var data = result.data.data;
        var listdata = [];
        for (var i=0; i<data.length;i++){
-        if($scope.city == data[i].location.city){
+        if(($scope.city == data[i].location.city || data[i].location.city=="" || $scope.sState == data[i].location.state || $scope.lState == data[i].location.state)  && (data[i].category != "City")){
         listdata.push({
           wereAbt: data[i].were_here_count,
           id: data[i].id,
@@ -190,7 +194,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
           link:data[i].link
           });
       }else{
-       // alert(data[i].location.city);
+        alert("i value"+ i+"----"+data[i].location.city+" Name ---"+ data[i].name);
        }
       }
       $scope.pageDatas=listdata;
