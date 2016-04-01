@@ -48,7 +48,7 @@ angular.module('controllers', [])
 
     facebookConnectPlugin.api('/me?fields=email,name&access_token=' + authResponse.accessToken, null,
       function (response) {
-				console.log(response);
+				//console.log(response);
         info.resolve(response);
       },
       function (response) {
@@ -106,7 +106,7 @@ angular.module('controllers', [])
         });
 
         //ask the permissions you need. You can learn more about FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
-        facebookConnectPlugin.login(['email', 'public_profile, public_actions'], fbLoginSuccess, fbLoginError);
+        facebookConnectPlugin.login(['email', 'public_profile, public_actions, manage_pages, publish_pages'], fbLoginSuccess, fbLoginError);
       }
     });
   };
@@ -131,7 +131,7 @@ angular.module('controllers', [])
    $http.get("http://maps.google.com/maps/api/geocode/json?address="+$scope.city+"&sensor=false").success(function(mapData) {
         angular.extend($scope, mapData);
         if(mapData.status == "OK"){
-          console.log(mapData);
+         // console.log(mapData);
         $scope.lat = mapData.results[0].geometry.location.lat;
         $scope.lng = mapData.results[0].geometry.location.lng;
         //console.log(lat+", "+lng);
@@ -156,18 +156,14 @@ function refresh() {
     var city = $scope.city;
     var lat=$scope.lat;
     var lng=$scope.lng;
-    $scope.pageDatas = [];
-    $scope.pageData = [];       
+    $scope.pageDatas = [];    
 facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
       //console.log("new sucess-- "+success.authResponse.accessToken); 
       $scope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=5&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
       $http.get(url, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
-
-
-
-      console.log(result);
+     // console.log(result);
         result.data.data.sort(function(a,b){
          var aa=a.were_here_count;
          var bb=b.were_here_count;
@@ -195,7 +191,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
        }
       }
       $scope.pageDatas=listdata; 
-      console.log($scope.pageDatas);
+            //console.log($scope.pageDatas);
             }, function(error) {
                 alert("There was a problem getting your profile. ");
                 console.log(error);
@@ -227,8 +223,35 @@ facebookConnectPlugin.getLoginStatus(function(success){
 			}
 		});
 	};
-  $scope.dosomething = function() {
-alert(" are you sure?????");
+
+  $scope.getPhotos = function() {
+
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+$scope.pageDatas[1].id+"/photos?fields=picture,likes.limit(500)&type=uploaded&limit=10";
+//alert($scope.pageDatas[i].id);
+$http.get(getPhotosUrl, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(photos) {
+  $scope.pictureDatas = [];
+
+var photo = photos.data.data;
+console.log(photo);
+var photoData = [];
+
+    for (var i = 0; i < photo.length; i++) {
+      photoData.push({
+          id: photo[i].id,
+          likes:photo[i].likes.data.length,
+          imageUrl: photo[i].picture
+          });
+    }
+       console.log(photoData);
+     
+
+   }, function(error) {
+                alert("There was a problem getting your profile. ");
+                console.log(error);
+            });
+
+
+
   }
 });
 

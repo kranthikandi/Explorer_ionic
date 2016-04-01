@@ -26,6 +26,10 @@ angular.module('starter', ['ionic', 'controllers', 'services'])
     templateUrl: "views/welcome.html",
     controller: 'WelcomeCtrl'
   })
+   .state('images', {
+    url: '/welcome',
+    templateUrl: "views/images.html",
+  })
 
   .state('app', {
     url: "/app",
