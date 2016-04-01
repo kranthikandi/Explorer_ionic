@@ -67,7 +67,7 @@ angular.module('controllers', [])
         // the user is logged in and has authenticated your app, and response.authResponse supplies
         // the user's ID, a valid access token, a signed request, and the time the access token
         // and signed request each expire
-        console.log('getLoginStatus', success.status);
+        //console.log('getLoginStatus', success.status);
 
 				//check if we have our user saved
 				var user = UserService.getUser('facebook');
@@ -138,11 +138,11 @@ angular.module('controllers', [])
         if(mapData.results[0].address_components.length == 4){
         $scope.sState = mapData.results[0].address_components[2].short_name;
         $scope.lState = mapData.results[0].address_components[2].long_name;
-        alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        //alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
         }else if(mapData.results[0].address_components.length == 3){
         $scope.sState = mapData.results[0].address_components[1].short_name;
         $scope.lState = mapData.results[0].address_components[1].long_name;
-        alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        //alert("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
         }
         refresh();
     }else{
@@ -157,16 +157,16 @@ function refresh() {
     var lat=$scope.lat;
     var lng=$scope.lng;
     $scope.pageDatas = [];
-    $scope.pageData = [];
-    //alert($rootScope.aToken);
-    //var aToken= "CAACEdEose0cBAP6wwB07EQdPqZArqfK3xSoyDVeLQFzy2WkyIxGAuFxLN7f96P3fJGiIAIqvcV4w0Y1KZBjcZA2MhM1owtH25c2lUeGIqow0ZB3XBgbj347wxWZBtyPzfG2NtHV1T9KM3JX9mBBAZBnA99rTr7hWhyFOvUGd9UTYU2v2ZCIueqzsvgyLAajBxXxfrknV4CB4laYtgeCPywn";
-            
+    $scope.pageData = [];       
 facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
-      console.log("new sucess-- "+success.authResponse.accessToken); 
+      //console.log("new sucess-- "+success.authResponse.accessToken); 
       $scope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
       $http.get(url, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
+
+
+
       console.log(result);
         result.data.data.sort(function(a,b){
          var aa=a.were_here_count;
@@ -181,6 +181,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
           wereAbt: data[i].were_here_count,
           id: data[i].id,
           name: data[i].name,
+          picture: data[i].picture.data.url,
           category: data[i].category,
           address: data[i].location.street+","+data[i].location.city+","+data[i].location.state+","+data[i].location.zip,
           city:data[i].location.city,
@@ -194,18 +195,14 @@ facebookConnectPlugin.getLoginStatus(function(success){
        }
       }
       $scope.pageDatas=listdata; 
+      console.log($scope.pageDatas);
             }, function(error) {
                 alert("There was a problem getting your profile. ");
                 console.log(error);
             });
      }
    });
-
-
-
-
   }
-
 	$scope.showLogOutMenu = function() {
 		var hideSheet = $ionicActionSheet.show({
 			destructiveText: 'Logout',
@@ -219,7 +216,6 @@ facebookConnectPlugin.getLoginStatus(function(success){
 				$ionicLoading.show({
 					template: 'Logging out...'
 				});
-
         //facebook logout
         facebookConnectPlugin.logout(function(){
           $ionicLoading.hide();
@@ -231,4 +227,14 @@ facebookConnectPlugin.getLoginStatus(function(success){
 			}
 		});
 	};
+  $scope.dosomething = function() {
+alert(" are you sure?????");
+  }
 });
+
+
+
+
+
+
+

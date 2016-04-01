@@ -20,11 +20,19 @@
             </form>
                 </div>
     </div>
-    <div  class="list card">
-      <div ng-repeat="pageData in pageDatas" class="item item-avatar" >
-        <h2>{{pageData.name}}</h2>
+    <ion-list can-swipe="true" ng-repeat="pageData in pageDatas">
+      <div   >
+        
+        <ion-item href="#">
+         <img ng-src="{{pageData.picture}}" >
+        {{pageData.name}}
+            <ion-option-button class="button-light icon ion-heart" ng-click="dosomething()"></ion-option-button>
+            <ion-option-button class="button-light icon ion-email"></ion-option-button>
+            <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+        </ion-item>
+       
       </div>
-    </div>
+ </ion-list>
    
   </ion-content>
 </ion-view>
