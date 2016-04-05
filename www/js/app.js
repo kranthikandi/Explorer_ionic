@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'controllers', 'services'])
+angular.module('starter', ['ionic', 'controllers', 'services','ion-gallery'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -18,7 +18,7 @@ angular.module('starter', ['ionic', 'controllers', 'services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,ionGalleryConfigProvider) {
   $stateProvider
 
   .state('welcome', {
@@ -44,8 +44,26 @@ angular.module('starter', ['ionic', 'controllers', 'services'])
     }
   })
 
+  .state('app.images', {
+    url: '/images',
+        views: {
+      'menuContent': {
+    templateUrl: "views/images.html",
+    controller: 'DemoCtrl'
+      }
+    }
+  })
+
   ;
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/welcome');
+
+  ionGalleryConfigProvider.setGalleryConfig({
+                          action_label: 'Close',
+                          toggle: false,
+                          row_size: 3,
+                          fixed_row_size: true
+  });
+  
 })

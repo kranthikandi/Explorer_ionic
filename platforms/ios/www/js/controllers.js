@@ -118,13 +118,39 @@ angular.module('controllers', [])
 
 })
 
+.controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
+
+
+
+})
+
+
+
+.controller('DemoCtrl',function($scope, $rootScope, $ionicSlideBoxDelegate) {
+  
+  $scope.images = $rootScope.photoDatas;
+ 
+  console.log($rootScope.photoDatas); 
+  console.log($scope.images);
+  
+  $scope.slideVisible = function(index){
+    if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
+       || index > $ionicSlideBoxDelegate.currentIndex() + 1){
+      return false;
+    }
+    
+    return true;
+  }
+  
+ 
+})
+
+
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
 	$scope.user = UserService.getUser();
   $scope.loginn = function(text) {
     //alert(text.city);
     $scope.city = text.city;
-      $scope.pageDatas = [];
-    $scope.pageData = []; 
  getLatLng();
   }
     function getLatLng(){
@@ -156,13 +182,13 @@ function refresh() {
     var city = $scope.city;
     var lat=$scope.lat;
     var lng=$scope.lng;
-    $scope.pageDatas = [];    
+    $rootScope.pageDatas = [];    
 facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
       //console.log("new sucess-- "+success.authResponse.accessToken); 
-      $scope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=5&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
-      $http.get(url, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(result) {
+      $rootScope.aToken = success.authResponse.accessToken;
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$scope.lat+","+$scope.lng+"&distance=10000";
+      $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {
      // console.log(result);
         result.data.data.sort(function(a,b){
          var aa=a.were_here_count;
@@ -190,7 +216,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
       }else{ 
        }
       }
-      $scope.pageDatas=listdata; 
+      $rootScope.pageDatas=listdata; 
             //console.log($scope.pageDatas);
             }, function(error) {
                 alert("There was a problem getting your profile. ");
@@ -224,31 +250,32 @@ facebookConnectPlugin.getLoginStatus(function(success){
 		});
 	};
 
-  $scope.getPhotos = function() {
+  $scope.getPhotos = function(id) {
 
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+$scope.pageDatas[1].id+"/photos?fields=picture,likes.limit(500)&type=uploaded&limit=10";
+
+//console.log($rootScope.aToken);
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture,likes.limit(100)&type=uploaded&limit=100";
 //alert($scope.pageDatas[i].id);
-$http.get(getPhotosUrl, { params: { access_token: $scope.aToken,  format: "json" }}).then(function(photos) {
-  $scope.pictureDatas = [];
+$http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
 var photo = photos.data.data;
 console.log(photo);
-var photoData = [];
-
+$rootScope.photoDatas = [];
+var data = [];
     for (var i = 0; i < photo.length; i++) {
-      photoData.push({
-          id: photo[i].id,
-          likes:photo[i].likes.data.length,
-          imageUrl: photo[i].picture
+      data.push({
+          src: photo[i].picture
           });
     }
-       console.log(photoData);
-     
+    $rootScope.photoDatas = data;
+       console.log($rootScope.photoDatas);
+           $state.go('app.images');
 
    }, function(error) {
                 alert("There was a problem getting your profile. ");
                 console.log(error);
             });
+
 
 
 

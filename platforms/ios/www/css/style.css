@@ -1,1 +1,22 @@
 /* Empty. Add your own CSS if you like */
+ion-content{
+	background-color: grey;
+}
+
+.container{
+	background-color: grey;
+}
+
+.scrollCanvas{
+  width: 100%;
+  height: 100%;
+  background-color: black;
+}
+
+.image{
+  	width: 100%;
+  	height: 600px;
+  	background-size: contain;
+  	background-repeat: no-repeat;
+  	background-position: center, center;
+}

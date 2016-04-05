@@ -26,7 +26,7 @@
         <ion-item href="#">
          <img ng-src="{{pageData.picture}}" >
         <h2  >{{pageData.name}}</h2>
-            <ion-option-button class="button-light icon ion-heart" ng-click="getPhotos()"></ion-option-button>
+            <ion-option-button class="button-light icon ion-heart" ng-click="getPhotos(pageData.id)"></ion-option-button>
             <ion-option-button class="button-light icon ion-email"></ion-option-button>
             <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
         </ion-item>
