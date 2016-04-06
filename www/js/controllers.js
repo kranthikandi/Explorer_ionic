@@ -106,7 +106,7 @@ angular.module('controllers', [])
         });
 
         //ask the permissions you need. You can learn more about FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
-        facebookConnectPlugin.login(['email', 'public_profile, public_actions, manage_pages, publish_pages'], fbLoginSuccess, fbLoginError);
+        facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
       }
     });
   };
@@ -120,14 +120,6 @@ angular.module('controllers', [])
 
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
 
-
-
-})
-
-
-
-.controller('DemoCtrl',function($scope, $rootScope, $ionicSlideBoxDelegate) {
-  
   $scope.images = $rootScope.photoDatas;
  
   console.log($rootScope.photoDatas); 
@@ -141,9 +133,68 @@ angular.module('controllers', [])
     
     return true;
   }
-  
- 
+
+
 })
+
+
+
+.controller('DemoCtrl',function($scope, $ionicLoading, $compile) {
+   function initialize() {
+        var myLatlng = new google.maps.LatLng(14.28347,-325.492841);
+        
+        var mapOptions = {
+          center: myLatlng,
+          zoom: 50,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+        
+        //Marker + infowindow + angularjs compiled ng-click
+        var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
+        var compiled = $compile(contentString)($scope);
+
+        var infowindow = new google.maps.InfoWindow({
+          content: compiled[0]
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Uluru (Ayers Rock)'
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map,marker);
+        });
+
+        $scope.map = map;
+      }
+            google.maps.event.addDomListener(window, 'load', initialize);
+      
+      $scope.centerOnMe = function() {
+alert("test");
+        if(!$scope.map) {
+          return;
+        }
+
+        $ionicLoading.show({
+          content: 'Getting current location...',
+        });
+
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          console.log(pos);
+          $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+          alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude)
+          $ionicLoading.hide();
+        }, function(error) {
+          alert('Unable to get location: ' + error.message);
+        });
+      };
+      
+})
+
 
 
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
@@ -153,6 +204,50 @@ angular.module('controllers', [])
     $scope.city = text.city;
  getLatLng();
   }
+
+
+
+      $scope.centerOnMe = function() {
+        $ionicLoading.show({
+          content: 'Getting current location...',
+        });
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          console.log(pos);
+          //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+         // alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude);
+var cityurl="http://maps.googleapis.com/maps/api/geocode/json?latlng="+pos.coords.latitude+","+pos.coords.longitude+"&sensor=true";
+        console.log(cityurl);
+$http.get(cityurl).success(function(citydata){
+  console.log(citydata);
+  if(citydata.status == "OK"){
+        $scope.lat = citydata.results[0].geometry.location.lat;
+        $scope.lng = citydata.results[0].geometry.location.lng;
+        $scope.city = citydata.results[0].address_components[3].long_name;
+        console.log($scope.lat+", "+$scope.lng+", "+$scope.city);
+        if(citydata.results[0].address_components.length == 8){
+        $scope.sState = citydata.results[0].address_components[5].short_name;
+        $scope.lState = citydata.results[0].address_components[5].long_name;
+        console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }else if(citydata.results[0].address_components.length == 7){
+        $scope.sState = citydata.results[0].address_components[4].short_name;
+        $scope.lState = citydata.results[0].address_components[4].long_name;
+        console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }
+        refresh();
+  }else{
+
+  }
+});
+          $ionicLoading.hide();
+        }, function(error) {
+          alert('Unable to get location: ' + error.message);
+        });
+        
+
+      };
+
+
+
     function getLatLng(){
    $http.get("http://maps.google.com/maps/api/geocode/json?address="+$scope.city+"&sensor=false").success(function(mapData) {
         angular.extend($scope, mapData);
@@ -254,7 +349,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
 
 
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture,likes.limit(100)&type=uploaded&limit=100";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture&type=uploaded&limit=100";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
@@ -280,11 +375,6 @@ var data = [];
 
 
   }
+
+   
 });
-
-
-
-
-
-
-

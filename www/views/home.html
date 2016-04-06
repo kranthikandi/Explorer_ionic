@@ -13,11 +13,13 @@
         </a> -->
         <form ng-submit="loginn(text)">
         <input type="text" ng-model="text.city" class="tftextinput" name="q" style="font-family: Arial, Helvetica, sans-serif;font-size:14px;border:1px solid #0076a3; border-right:0px;border-top-left-radius: 5px 5px;
-    border-bottom-left-radius: 5px 5px;" size="21" maxlength="120"  id= "city"/>
+    border-bottom-left-radius: 5px 5px;" size="21" maxlength="120"  id= "city"/> 
+<ion-button class="ion-navigate" ng-click="centerOnMe()"></ion-button>
 <button type="button" ng-click="loginn(text)" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
                 search
             </button>
             </form>
+             <!--    <button ng-click="centerOnMe()"> click here </button> -->
                 </div>
     </div>
     <ion-list can-swipe="true" ng-repeat="pageData in pageDatas">
@@ -26,9 +28,9 @@
         <ion-item href="#">
          <img ng-src="{{pageData.picture}}" >
         <h2  >{{pageData.name}}</h2>
-            <ion-option-button class="button-light icon ion-heart" ng-click="getPhotos(pageData.id)"></ion-option-button>
-            <ion-option-button class="button-light icon ion-email"></ion-option-button>
-            <ion-option-button class="button-assertive icon ion-trash-a"></ion-option-button>
+            <ion-option-button class="button-light icon ion-images" ng-click="getPhotos(pageData.id)"></ion-option-button>
+            <ion-option-button class="button-light icon ion-message"></ion-option-button>
+            <ion-option-button class="button-light icon ion-heart"></ion-option-button>
         </ion-item>
        
       </div>

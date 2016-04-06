@@ -208,5 +208,7 @@
         </array>
       </dict>
     </array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string/>
   </dict>
 </plist>

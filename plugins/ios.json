@@ -14,6 +14,12 @@
             "APP_ID": "971173962970596",
             "APP_NAME": "Explore",
             "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
         }
     },
     "dependent_plugins": {}

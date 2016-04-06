@@ -39,6 +39,10 @@
                         {
                             "xml": "<access origin=\"https://*.akamaihd.net\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -62,6 +66,12 @@
                             "xml": "<array><dict><key>CFBundleURLSchemes</key><array><string>fb971173962970596</string></array></dict></array>",
                             "count": 1
                         }
+                    ],
+                    "NSLocationWhenInUseUsageDescription": [
+                        {
+                            "xml": "<string />",
+                            "count": 1
+                        }
                     ]
                 }
             }
@@ -74,6 +84,12 @@
         "phonegap-facebook-plugin": {
             "APP_ID": "971173962970596",
             "APP_NAME": "Explore",
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.startapplabs.facebook-login"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.startapplabs.facebook-login"
         }
     },
@@ -95,10 +111,44 @@
             "clobbers": [
                 "facebookConnectPlugin"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-geolocation/www/Coordinates.js",
+            "id": "cordova-plugin-geolocation.Coordinates",
+            "pluginId": "cordova-plugin-geolocation",
+            "clobbers": [
+                "Coordinates"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+            "id": "cordova-plugin-geolocation.PositionError",
+            "pluginId": "cordova-plugin-geolocation",
+            "clobbers": [
+                "PositionError"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-geolocation/www/Position.js",
+            "id": "cordova-plugin-geolocation.Position",
+            "pluginId": "cordova-plugin-geolocation",
+            "clobbers": [
+                "Position"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-geolocation/www/geolocation.js",
+            "id": "cordova-plugin-geolocation.geolocation",
+            "pluginId": "cordova-plugin-geolocation",
+            "clobbers": [
+                "navigator.geolocation"
+            ]
         }
     ],
     "plugin_metadata": {
         "ionic-plugin-keyboard": "2.0.1",
-        "phonegap-facebook-plugin": "0.12.0"
+        "phonegap-facebook-plugin": "0.12.0",
+        "cordova-plugin-geolocation": "2.1.0",
+        "cordova-plugin-whitelist": "1.0.0"
     }
 }
