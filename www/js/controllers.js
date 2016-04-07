@@ -121,9 +121,9 @@ angular.module('controllers', [])
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
 
   $scope.images = $rootScope.photoDatas;
- 
-  console.log($rootScope.photoDatas); 
-  console.log($scope.images);
+ $scope.imagesName = $rootScope.PageName;
+  //console.log($rootScope.photoDatas); 
+  //console.log($scope.images);
   
   $scope.slideVisible = function(index){
     if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
@@ -304,7 +304,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
 		});
 	};
 
-  $scope.getPhotos = function(id) {
+  $scope.getPhotos = function(id,name) {
 
 
 //console.log($rootScope.aToken);
@@ -313,7 +313,9 @@ var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
 var photo = photos.data.data;
-console.log(photo);
+$rootScope.PageName = name;
+console.log($rootScope.PageName);
+//console.log(photo);
 $rootScope.photoDatas = [];
 var data = [];
     for (var i = 0; i < photo.length; i++) {
@@ -322,7 +324,7 @@ var data = [];
           });
     }
     $rootScope.photoDatas = data;
-       console.log($rootScope.photoDatas);
+      // console.log($rootScope.photoDatas);
            $state.go('app.images');
 
    }, function(error) {
