@@ -20,11 +20,11 @@ ion-content{
   	background-repeat: no-repeat;
   	background-position: center, center;
 }
-/*#map {
+#map {
   width: 100%;
   height: 100%;
 }
 
 .scroll {
   height: 100%;
-}*/
+}

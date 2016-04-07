@@ -5,6 +5,7 @@
     "ionic": "driftyco/ionic-bower#1.1.0"
   },
   "dependencies": {
-    "ion-gallery": "^0.1.14"
+    "ion-gallery": "^0.1.14",
+    "ngmap": "^1.17.3"
   }
 }
