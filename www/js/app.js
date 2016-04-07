@@ -18,7 +18,9 @@ angular.module('starter', ['ionic', 'controllers', 'services','ion-gallery','ngC
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider,ionGalleryConfigProvider) {
+.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider,ionGalleryConfigProvider) {
+$ionicConfigProvider.backButton.previousTitleText(false).text('');;
+
   $stateProvider
 
   .state('welcome', {

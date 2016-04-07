@@ -118,24 +118,6 @@ angular.module('controllers', [])
 
 })
 
-.controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
-
-  $scope.images = $rootScope.photoDatas;
- 
-  console.log($rootScope.photoDatas); 
-  console.log($scope.images);
-  
-  $scope.slideVisible = function(index){
-    if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
-       || index > $ionicSlideBoxDelegate.currentIndex() + 1){
-      return false;
-    }
-    
-    return true;
-  }
-
-
-})
 
 
 
@@ -303,7 +285,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
 		});
 	};
 
-  $scope.getPhotos = function(id) {
+  $scope.getPhotos = function(id,name) {
 
 
 //console.log($rootScope.aToken);
@@ -312,8 +294,11 @@ var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
 var photo = photos.data.data;
+$scope.pageName=name;
+console.log($scope.pageName);
 console.log(photo);
 $rootScope.photoDatas = [];
+
 var data = [];
     for (var i = 0; i < photo.length; i++) {
       data.push({
@@ -349,6 +334,7 @@ var locations = $rootScope.markLoc;
 
 
 
+<<<<<<< Updated upstream
   function setMarkers(map,locations){
 
       var marker, i;
@@ -403,3 +389,14 @@ function closeInfos(){
 
    
 });
+=======
+
+
+
+})
+
+.controller('ImgCtrl', function($scope) {
+
+
+    });
+>>>>>>> Stashed changes

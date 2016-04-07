@@ -48,6 +48,14 @@ module.exports = [
         "clobbers": [
             "navigator.geolocation"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+        "id": "cordova-plugin-statusbar.statusbar",
+        "pluginId": "cordova-plugin-statusbar",
+        "clobbers": [
+            "window.StatusBar"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -56,7 +64,8 @@ module.exports.metadata =
     "ionic-plugin-keyboard": "2.0.1",
     "phonegap-facebook-plugin": "0.12.0",
     "cordova-plugin-geolocation": "2.1.0",
-    "cordova-plugin-whitelist": "1.0.0"
+    "cordova-plugin-whitelist": "1.0.0",
+    "cordova-plugin-statusbar": "2.1.2"
 }
 // BOTTOM OF METADATA
 });

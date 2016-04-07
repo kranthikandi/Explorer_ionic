@@ -6,6 +6,10 @@
   },
   "dependencies": {
     "ion-gallery": "^0.1.14",
+<<<<<<< Updated upstream
     "ngmap": "^1.17.3"
+=======
+    "ionic-ion-header-shrink": "*"
+>>>>>>> Stashed changes
   }
 }
