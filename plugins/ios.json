@@ -20,9 +20,6 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.startapplabs.facebook-login"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.startapplabs.facebook-login"
         }
     },
     "dependent_plugins": {}

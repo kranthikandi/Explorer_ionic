@@ -1,37 +1,35 @@
 <ion-view class="home-view">
-  <ion-nav-title class="bar-stable">
-     <form ng-submit="loginn(text)">
- <div class="bar bar-header item-input-inset padding-bottom">
-        <label class="item-input-wrapper label">
-       <i class="icon ion-ios-search placeholder-icon"></i>
+  <ion-nav-title>
+    <span>Facebook Login Example</span>
+  </ion-nav-title>
+  <ion-content class="has-header padding">
+    <div class="row">
+      <div class="col">
+        <h3 class="welcome-message">Hi {{user.name}}</h3>
        <!--  <p class="welcome-message">You have logged in with Facebook</p>
         <img ng-src="{{user.picture}}">
         <a class="button button-assertive button-block button-outline" ng-click="showLogOutMenu()">
           Log Out
         </a> -->
-      
-        <input type="text" ng-model="text.city" class="tftextinput" name="q" id= "city"/> 
-    </label>
+        <form ng-submit="loginn(text)">
+        <input type="text" ng-model="text.city" class="tftextinput" name="q" style="font-family: Arial, Helvetica, sans-serif;font-size:14px;border:1px solid #0076a3; border-right:0px;border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;" size="21" maxlength="120"  id= "city"/> 
 <ion-button class="ion-navigate" ng-click="centerOnMe()"></ion-button>
-            </div>
+<button type="button" ng-click="loginn(text)" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
+                search
+            </button>
             </form>
-<<<<<<< Updated upstream
                 </div>
     </div>
      <button ng-click="initialize()">click</button>
 <div id="default" style="width:100%; height:100%"></div>
-=======
-        </ion-nav-title>     <!--    <button ng-click="centerOnMe()"> click here </button> -->
-            
-    <ion-content class="has-header">
->>>>>>> Stashed changes
     <ion-list can-swipe="true" ng-repeat="pageData in pageDatas">
-      <div>
+      <div   >
         
         <ion-item href="#">
          <img ng-src="{{pageData.picture}}" >
-        <h2 >{{pageData.name}}</h2>
-            <ion-option-button class="button-light icon ion-images" ng-click="getPhotos(pageData.id,pageData.name)"></ion-option-button>
+        <h2  >{{pageData.name}}</h2>
+            <ion-option-button class="button-light icon ion-images" ng-click="getPhotos(pageData.id)"></ion-option-button>
             <ion-option-button class="button-light icon ion-message"></ion-option-button>
             <ion-option-button class="button-light icon ion-heart"></ion-option-button>
         </ion-item>
