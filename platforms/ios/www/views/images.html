@@ -1,53 +1,8 @@
 <ion-view class="home-view">
   <ion-nav-title>
-    <span>Facebook Login Example</span>
+    <h2>{{pageName}}</h2>
   </ion-nav-title>
   <ion-content class="has-header padding">
-    <div class="row">
-      <div class="col">
-        <h3 class="welcome-message">images</h3>
-
-
-
-<ion-gallery ion-gallery-items="images"></ion-gallery>
-
-
-            <!-- <ion-list can-swipe="true" ng-repeat="photoData in photoDatas">
-<p>{{photoData.src}}</p> 
- </ion-list> -->
- <ion-gallery ion-gallery-items="photoDatas"></ion-gallery>
-      </div>
-    </div>   
+ <ion-gallery ion-gallery-items="photoDatas"></ion-gallery> 
   </ion-content>
 </ion-view>
-
-
-<!--   <head>
-    <meta charset="utf-8">
-    <title>
-      Zoomable images
-    </title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">  
-    <script src="//code.ionicframework.com/1.0.0-beta.13/js/ionic.bundle.js"></script>
-  </head>
-  <body class="padding" ng-controller="DemoCtrl">
-    <ion-content>
-    <ion-slide-box>
-  
-          <ion-slide ng-repeat="image in images"> 
-             <div class="container" ng-if="slideVisible($index)" class="scrollCanvas">
-                  <ion-scroll class="scrollCanvas" zooming="true" min-zoom="1" direction="xy" locked="false">
-                        <img src="{{image.src}}">
-                        <div class="image" style="background-image: url( {{image}} )"></div> 
-                        
-                  </ion-scroll>
-             </div>
-             <div>&nbsp;</div>
-      </ion-slide>
-  
-  </ion-slide-box>
-  
-      
-  </ion-content>
-    
-  </body> -->

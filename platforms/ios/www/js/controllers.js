@@ -270,6 +270,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
       }
       $rootScope.pageDatas=listdata; 
       $rootScope.markLoc = listLoc;
+      console.log($rootScope.pageDatas);
             console.log($scope.markLoc);
             }, function(error) {
                 alert("There was a problem getting your profile. ");
