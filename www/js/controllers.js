@@ -120,19 +120,19 @@ angular.module('controllers', [])
 
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
 
-  $scope.images = $rootScope.photoDatas;
+  $scope.images = $rootScope.photoDatas;
  
-  console.log($rootScope.photoDatas); 
-  console.log($scope.images);
-  
-  $scope.slideVisible = function(index){
-    if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
-       || index > $ionicSlideBoxDelegate.currentIndex() + 1){
-      return false;
-    }
-    
-    return true;
-  }
+  console.log($rootScope.photoDatas); 
+  console.log($scope.images);
+  
+  $scope.slideVisible = function(index){
+    if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
+       || index > $ionicSlideBoxDelegate.currentIndex() + 1){
+      return false;
+    }
+    
+    return true;
+  }
 
 
 })

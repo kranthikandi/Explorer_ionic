@@ -1,10 +1,10 @@
 /* Empty. Add your own CSS if you like */
 ion-content{
-	background-color: white;
+	background-color: grey;
 }
 
 .container{
-	background-color: white;
+	background-color: grey;
 }
 
 .scrollCanvas{
@@ -27,15 +27,4 @@ ion-content{
 
 .scroll {
   height: 100%;
-}
-body {
-  cursor: url('http://ionicframework.com/img/finger.png'), auto;
-}
-.platform-ios.platform-cordova:not(.fullscreen).headmargin{
-   margin-bottom: 200px;
-}
-.label {
-    display:table-header-group;
-    width:50%;
-    font-weight:bold;
 }
