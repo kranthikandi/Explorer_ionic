@@ -28,3 +28,13 @@ ion-content{
 .scroll {
   height: 100%;
 }
+
+.headers{
+  padding-bottom: 50px;
+}
+.locate{
+padding: 10px;
+}
+.label{
+  width: 50%;
+}

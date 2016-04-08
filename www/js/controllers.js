@@ -134,7 +134,6 @@ angular.module('controllers', [])
     return true;
   }
 
-
 })
 
 
@@ -150,7 +149,6 @@ angular.module('controllers', [])
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
 	$scope.user = UserService.getUser();
   $scope.loginn = function(text) {
-    //alert(text.city);
     $scope.city = text.city;
  getLatLng();
   }
@@ -162,26 +160,26 @@ angular.module('controllers', [])
           content: 'Getting current location...',
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
-          console.log(pos);
+         // console.log(pos);
           //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
          // alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude);
 var cityurl="http://maps.googleapis.com/maps/api/geocode/json?latlng="+pos.coords.latitude+","+pos.coords.longitude+"&sensor=true";
-        console.log(cityurl);
+     //   console.log(cityurl);
 $http.get(cityurl).success(function(citydata){
-  console.log(citydata);
+ // console.log(citydata);
   if(citydata.status == "OK"){
         $rootScope.lat = citydata.results[0].geometry.location.lat;
         $rootScope.lng = citydata.results[0].geometry.location.lng;
         $scope.city = citydata.results[0].address_components[3].long_name;
-        console.log($scope.lat+", "+$scope.lng+", "+$scope.city);
+      //  console.log($scope.lat+", "+$scope.lng+", "+$scope.city);
         if(citydata.results[0].address_components.length == 8){
         $scope.sState = citydata.results[0].address_components[5].short_name;
         $scope.lState = citydata.results[0].address_components[5].long_name;
-        console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+       // console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
         }else if(citydata.results[0].address_components.length == 7){
         $scope.sState = citydata.results[0].address_components[4].short_name;
         $scope.lState = citydata.results[0].address_components[4].long_name;
-        console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+       // console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
         }
         refresh();
   }else{
@@ -221,6 +219,7 @@ $http.get(cityurl).success(function(citydata){
 });
   }
 function refresh() {
+  $state.go('app.home');
     var thislocation="";
     var valuess="";
     var table="";
@@ -232,7 +231,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
       //console.log("new sucess-- "+success.authResponse.accessToken); 
       $rootScope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=5&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
       $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {
      // console.log(result);
         result.data.data.sort(function(a,b){
@@ -270,14 +269,18 @@ facebookConnectPlugin.getLoginStatus(function(success){
       }
       $rootScope.pageDatas=listdata; 
       $rootScope.markLoc = listLoc;
-      console.log($rootScope.pageDatas);
-            console.log($scope.markLoc);
+      console.log($scope.markLoc);
+      google.maps.event.addDomListener(document.getElementById("map"), 'load', $scope.initialize());
+       
+      //console.log($rootScope.pageDatas);
+         //   
             }, function(error) {
                 alert("There was a problem getting your profile. ");
                 console.log(error);
             });
      }
    });
+
   }
 	$scope.showLogOutMenu = function() {
 		var hideSheet = $ionicActionSheet.show({
@@ -308,7 +311,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
 
 
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture&type=uploaded&limit=100";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture&type=uploaded&limit=10";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
@@ -333,9 +336,18 @@ var data = [];
             });
   }
 var infos = [];
+$scope.toggle = true;
+  $scope.div1Hide = true;
+    $scope.showADiv = function(divToShow){
+    $scope.div1Hide = !$scope.div1Hide;
+     $scope.toggle = !$scope.toggle;
+  }
+ $scope.list = function() {
+    $scope.toggle = !$scope.toggle;
+    $scope.div1Hide = !$scope.div1Hide;
+      }
 
   $scope.initialize = function() {
-
 var locations = $rootScope.markLoc;
     var myOptions = {
       center: new google.maps.LatLng(33.890542, 151.274856),
@@ -343,22 +355,11 @@ var locations = $rootScope.markLoc;
       mapTypeId: google.maps.MapTypeId.ROADMAP
 
     };
-    var map = new google.maps.Map(document.getElementById("default"),
-        myOptions);
 
-    setMarkers(map,locations)
-
-  }
-
-
-
-  function setMarkers(map,locations){
-
-      var marker, i;
-
-for (i = 0; i < locations.length; i++)
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+//console.log(map);
+for (var i = 0; i < locations.length; i++)
  {  
-
  var name = locations[i].siteName;
  var lat = locations[i].latitude;
  var long = locations[i].longitude;
@@ -372,7 +373,7 @@ for (i = 0; i < locations.length; i++)
         map.setCenter(marker.getPosition())
 
 
-        var content = "name Number: " + name +  '</h3>' + "Address: " + likes     
+        var content = "name Number: " + name + "Address: " + likes     
 
   var infowindow = new google.maps.InfoWindow()
 
@@ -387,7 +388,9 @@ google.maps.event.addListener(marker,'click', (function(marker,content,infowindo
     })(marker,content,infowindow)); 
 
   }
+    $scope.map = map;
   }
+//google.maps.event.addDomListener(document.getElementById("map"), "load", initialize());
 
 function closeInfos(){
  
@@ -403,6 +406,8 @@ function closeInfos(){
       infos.length = 0;
    }
 }
+
+
 
    
 });
