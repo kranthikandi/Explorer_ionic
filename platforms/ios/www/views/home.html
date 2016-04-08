@@ -1,6 +1,6 @@
 <ion-view class="home-view">
   <ion-nav-title>
-    <form ng-submit="loginn(text)">
+   <!--  <form ng-submit="loginn(text)">
           <div class="bar bar-header item-input-inset headers">
         <label class="item-input-wrapper ">
         <i class="icon ion-ios-search placeholder-icon" ></i>
@@ -8,8 +8,16 @@
         </label>
         <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
                </div>
-    </form>
-
+    </form> -->
+    <form ng-submit="loginn(text)">
+<div class="bar bar-header item-input-inset headers">
+  <label class="item-input-wrapper">
+    <i class="icon ion-ios-search placeholder-icon"></i>
+    <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city">
+  </label>
+  <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
+</div>
+</form>
   </ion-nav-title>
   <ion-content class="has-header padding">
        <!--  <p class="welcome-message">You have logged in with Facebook</p>
@@ -28,7 +36,7 @@
           <ion-option-button class="button-light icon ion-heart"></ion-option-button>
         </ion-item>
     </ion-list>
-        <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}">
+        <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}" style="width:100% height:100%">
           <ng-map id="map" class="map" ></ng-map>
         </div>
   </ion-content>
