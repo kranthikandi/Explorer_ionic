@@ -149,6 +149,10 @@ angular.module('controllers', [])
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
 	$scope.user = UserService.getUser();
   $scope.loginn = function(text) {
+    $ionicLoading.show({
+          //content: 'Getting current location...',
+          template: '<div style= "background-color:none; font-size: 30px"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></div>'
+        });
     $scope.city = text.city;
  getLatLng();
   }
@@ -157,7 +161,7 @@ angular.module('controllers', [])
 
       $scope.centerOnMe = function() {
         $ionicLoading.show({
-          content: 'Getting current location...',
+          template: '<div style= "background-color:none; font-size: 30px"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></div>'
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
          // console.log(pos);
@@ -186,7 +190,7 @@ $http.get(cityurl).success(function(citydata){
 
   }
 });
-          $ionicLoading.hide();
+          
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
@@ -226,26 +230,23 @@ function refresh() {
     var city = $scope.city;
     var lat=$rootScope.lat;
     var lng=$rootScope.lng;
-    $rootScope.pageDatas = [];    
+    $rootScope.pageDatas = [];   
+    $rootScope.filer = "wereAbt"; 
 facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
       //console.log("new sucess-- "+success.authResponse.accessToken); 
       $rootScope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=5&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
-      $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {
-     // console.log(result);
-        result.data.data.sort(function(a,b){
-         var aa=a.were_here_count;
-         var bb=b.were_here_count;
-         return bb-aa;
-       });   
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
+      $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {  
         var data = result.data.data;
+        //console.log(data);
        var listdata = [];
-       var listLoc = [];
        for (var i=0; i<data.length;i++){
         if(($scope.city == data[i].location.city || data[i].location.city=="" || $scope.sState == data[i].location.state || $scope.lState == data[i].location.state)  && (data[i].category != "City")){
         listdata.push({
           wereAbt: data[i].were_here_count,
+          likes:data[i].likes,
+          talkAbt: data[i].talking_about_count,
           id: data[i].id,
           name: data[i].name,
           picture: data[i].picture.data.url,
@@ -254,22 +255,16 @@ facebookConnectPlugin.getLoginStatus(function(success){
           city:data[i].location.city,
           lat:data[i].location.latitude,
           lng:data[i].location.longitude,
-          talkAbt: data[i].talking_about_count,
-          likes:data[i].likes,
           link:data[i].link
           });
-        listLoc.push({
-            siteName: data[i].name,
-            siteScore: data[i].likes,
-            latitude: data[i].location.latitude,
-            longitude: data[i].location.longitude
-        })
       }else{ 
        }
       }
       $rootScope.pageDatas=listdata; 
-      $rootScope.markLoc = listLoc;
-      console.log($scope.markLoc);
+      
+
+sorter();
+
       google.maps.event.addDomListener(document.getElementById("map"), 'load', $scope.initialize());
        
       //console.log($rootScope.pageDatas);
@@ -348,7 +343,7 @@ $scope.toggle = true;
       }
 
   $scope.initialize = function() {
-var locations = $rootScope.markLoc;
+var locations = $rootScope.pageDatas;
     var myOptions = {
       center: new google.maps.LatLng(33.890542, 151.274856),
       zoom: 8,
@@ -360,10 +355,10 @@ var locations = $rootScope.markLoc;
 //console.log(map);
 for (var i = 0; i < locations.length; i++)
  {  
- var name = locations[i].siteName;
- var lat = locations[i].latitude;
- var long = locations[i].longitude;
- var likes =  locations[i].siteScore;
+ var name = locations[i].name;
+ var lat = locations[i].lat;
+ var long = locations[i].lng;
+ var likes =  locations[i].likes;
 
  latlngset = new google.maps.LatLng(lat, long);
 
@@ -407,7 +402,48 @@ function closeInfos(){
    }
 }
 
+$scope.sLikes = function(){
 
+  $rootScope.filer = "likes";
+  sorter();
+}
+
+$scope.sTalkAbt = function(){
+  $rootScope.filer = "talkAbt";
+  sorter();
+}
+
+$scope.sWerAbt = function(){
+  $rootScope.filer = "wereAbt";
+  sorter();
+}
+function sorter(){
+  if($rootScope.filer == "wereAbt"){
+  $rootScope.pageDatas.sort(function(a,b){
+         var aa=a.wereAbt;
+         var bb=b.wereAbt;
+         return bb-aa;
+       }); 
+  console.log($rootScope.pageDatas);
+}else if ($rootScope.filer == "likes") {
+  $rootScope.pageDatas.sort(function(a,b){
+         var aa=a.likes;
+         var bb=b.likes;
+         return bb-aa;
+       }); 
+  console.log($rootScope.pageDatas);
+}else if ($rootScope.filer == "talkAbt") {
+    $rootScope.pageDatas.sort(function(a,b){
+         var aa=a.talkAbt;
+         var bb=b.talkAbt;
+         return bb-aa;
+       }); 
+      console.log($rootScope.pageDatas);
+}
+
+$ionicLoading.hide();
+
+}
 
    
 });

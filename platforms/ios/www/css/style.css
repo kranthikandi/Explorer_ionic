@@ -41,3 +41,7 @@ padding: 10px;
 .size{
   font-size: 20px;
 }
+.border{
+  border-color: white;
+  background-color: #EF473A;
+}

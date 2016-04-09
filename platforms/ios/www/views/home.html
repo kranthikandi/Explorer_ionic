@@ -4,18 +4,16 @@
 <div class="bar bar-header item-input-inset headers">
   <label class="item-input-wrapper">
     <i class="icon ion-ios-search placeholder-icon"></i>
-    <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city" style="ba">
+    <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city">
   </label>
   <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
   <ion-button ng-show="!toggle" ng-click="list()" class="icon ion-ios-list-outline size"></ion-button>
     <ion-button ng-show="toggle" ng-click="showADiv('div1')" class="icon ion-map size"></ion-button>
 </div>
 </form>
-
-
-  </ion-nav-title>
-         <ion-header-bar class="bar-subheader bar-assertive">
-<div class="tabs">
+</ion-nav-title>
+         <ion-header-bar class="bar-subheader bar-assertive ">
+<div class="tabs border">
               <a class="tab-item" ui-sref="list">
                 <p>Overall</p>
               </a>
@@ -26,13 +24,10 @@
                       
         </ion-header-bar>
   <ion-content class="has-header has-subheader padding">
-       <!--  <p class="welcome-message">You have logged in with Facebook</p>
-        <img ng-src="{{user.picture}}">
-        <a class="button button-assertive button-block button-outline" ng-click="showLogOutMenu()">
-          Log Out
-        </a> -->
-             
-    <ion-list  ng-show="toggle"can-swipe="true" ng-repeat="pageData in pageDatas">
+   <ion-button ng-click="sWerAbt()" >Were here</ion-button>
+    <ion-button ng-click="sLikes()" >likes</ion-button>
+    <ion-button ng-click="sTalkAbt()" >Talking About</ion-button>
+ <ion-list  ng-show="toggle"can-swipe="true" ng-repeat="pageData in pageDatas">
         <ion-item href="#">
         <img ng-src="{{pageData.picture}}" >
         <h2>{{pageData.name}}</h2>
