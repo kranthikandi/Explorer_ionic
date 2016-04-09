@@ -25,6 +25,13 @@ ion-content{
   height: 100%;
 }
 
+.feeds{
+  background-color: white;
+border-style: solid;
+padding-bottom: 10px;
+padding-top: 10px;
+}
+
 .scroll {
   height: 100%;
 }

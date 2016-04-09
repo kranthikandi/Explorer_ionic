@@ -55,6 +55,16 @@ angular.module('starter', ['ionic', 'controllers', 'services','ion-gallery','ngC
     }
   })
 
+    .state('app.feeds', {
+    url: '/feeds',
+        views: {
+      'menuContent': {
+    templateUrl: "views/feeds.html",
+    controller: 'FeedCtrl'
+      }
+    }
+  })
+
     .state('app.settings', {
     url: '/settings',
         views: {

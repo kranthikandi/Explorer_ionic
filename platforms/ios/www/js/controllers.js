@@ -138,10 +138,11 @@ angular.module('controllers', [])
 
 
 
-.controller('DemoCtrl',function($scope,$rootScope) {
+.controller('FeedCtrl',function($scope,$rootScope) {
 
-
-
+$scope.feeds = $rootScope.photoDatas;
+$scope.pageName = $rootScope.PageName;
+console.log($scope.feeds);
 })
 
 
@@ -302,34 +303,41 @@ sorter();
 		});
 	};
 
-  $scope.getPhotos = function(id,name) {
+  $scope.getPhotos = function(id,name,message) {
 
 
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/photos?fields=picture&type=uploaded&limit=10";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=100";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
 var photo = photos.data.data;
 $rootScope.PageName = name;
-console.log($rootScope.PageName);
-//console.log(photo);
+
 $rootScope.photoDatas = [];
 var data = [];
     for (var i = 0; i < photo.length; i++) {
       data.push({
-          src: photo[i].picture
+          src: photo[i].picture,
+          msg: photo[i].message
           });
     }
     $rootScope.photoDatas = data;
       // console.log($rootScope.photoDatas);
-           $state.go('app.images');
+      if (message == "photo") {
+        $state.go('app.images');
+      }
+      else{
+        $state.go('app.feeds');
+      }
+           
 
    }, function(error) {
                 alert("There was a problem getting your profile. ");
                 console.log(error);
             });
   }
+
 var infos = [];
 $scope.toggle = true;
   $scope.div1Hide = true;

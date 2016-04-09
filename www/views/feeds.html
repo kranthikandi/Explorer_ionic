@@ -1,0 +1,11 @@
+<ion-view class="home-view">
+  <ion-nav-title>
+    <h2 class="title">{{pageName}}</h2>
+  </ion-nav-title>
+  <ion-content class="has-header padding">
+ <ion-list ng-repeat="feed in feeds">
+  <pre class="feeds">{{feed.msg}}
+  <img  class="feeds" src="{{feed.src}}"></pre>
+ </ion-list>
+  </ion-content>
+</ion-view>
