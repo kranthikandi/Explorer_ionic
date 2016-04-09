@@ -1,14 +1,5 @@
 <ion-view class="home-view">
   <ion-nav-title>
-   <!--  <form ng-submit="loginn(text)">
-          <div class="bar bar-header item-input-inset headers">
-        <label class="item-input-wrapper ">
-        <i class="icon ion-ios-search placeholder-icon" ></i>
-        <input type="text" ng-model="text.city"  placeholder="Search" class="tftextinput" name="q"  id= "city"/> 
-        </label>
-        <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
-               </div>
-    </form> -->
     <form ng-submit="loginn(text)">
 <div class="bar bar-header item-input-inset headers">
   <label class="item-input-wrapper">
@@ -16,17 +7,24 @@
     <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city">
   </label>
   <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
+  <ion-button ng-show="!toggle" ng-click="list()" class="icon ion-ios-list-outline size"></ion-button>
+    <ion-button ng-show="toggle" ng-click="showADiv('div1')" class="icon ion-map size"></ion-button>
 </div>
 </form>
+
+       <ion-header-bar class="bar-subheader bar-assertive">
+<div class="title" style="color:red">
+     hello</div>
+                      
+        </ion-header-bar>
   </ion-nav-title>
-  <ion-content class="has-header padding">
+  <ion-content class="has-header has-subheader padding">
        <!--  <p class="welcome-message">You have logged in with Facebook</p>
         <img ng-src="{{user.picture}}">
         <a class="button button-assertive button-block button-outline" ng-click="showLogOutMenu()">
           Log Out
         </a> -->
-             <ion-button ng-show="!toggle" ng-click="list()" class="icon ios-list">list</ion-button>
-    <ion-button ng-show="toggle" ng-click="showADiv('div1')" class="icon ion-map"></ion-button>
+             
     <ion-list  ng-show="toggle"can-swipe="true" ng-repeat="pageData in pageDatas">
         <ion-item href="#">
         <img ng-src="{{pageData.picture}}" >
@@ -36,8 +34,8 @@
           <ion-option-button class="button-light icon ion-heart"></ion-option-button>
         </ion-item>
     </ion-list>
-        <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}" style="width:100% height:100%">
-          <ng-map id="map" class="map" ></ng-map>
+        <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}" id="map">
+          <ng-map id="map" class="map"></ng-map>
         </div>
   </ion-content>
 </ion-view>
