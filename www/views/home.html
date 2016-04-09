@@ -4,7 +4,7 @@
 <div class="bar bar-header item-input-inset headers">
   <label class="item-input-wrapper">
     <i class="icon ion-ios-search placeholder-icon"></i>
-    <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city">
+    <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city" style="ba">
   </label>
   <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
   <ion-button ng-show="!toggle" ng-click="list()" class="icon ion-ios-list-outline size"></ion-button>
@@ -12,12 +12,19 @@
 </div>
 </form>
 
-       <ion-header-bar class="bar-subheader bar-assertive">
-<div class="title" style="color:red">
-     hello</div>
+
+  </ion-nav-title>
+         <ion-header-bar class="bar-subheader bar-assertive">
+<div class="tabs">
+              <a class="tab-item" ui-sref="list">
+                <p>Overall</p>
+              </a>
+              <a class="tab-item" ui-sref="secondlist">
+                <p>Mine</p>
+              </a>
+              </div>
                       
         </ion-header-bar>
-  </ion-nav-title>
   <ion-content class="has-header has-subheader padding">
        <!--  <p class="welcome-message">You have logged in with Facebook</p>
         <img ng-src="{{user.picture}}">
