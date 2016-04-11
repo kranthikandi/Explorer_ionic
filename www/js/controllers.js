@@ -118,6 +118,34 @@ angular.module('controllers', [])
 
 })
 
+.controller('DemoCtrl', function($scope, $ionicActionSheet, $ionicLoading,$state){
+    $scope.showLogOutMenu = function() {
+    var hideSheet = $ionicActionSheet.show({
+      destructiveText: 'Logout',
+      titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+      cancelText: 'Cancel',
+      cancel: function() {},
+      buttonClicked: function(index) {
+        return true;
+      },
+      destructiveButtonClicked: function(){
+        $ionicLoading.show({
+          template: 'Logging out...'
+        });
+        //facebook logout
+        facebookConnectPlugin.logout(function(){
+          $ionicLoading.hide();
+          $state.go('welcome');
+        },
+        function(fail){
+          $ionicLoading.hide();
+        });
+      }
+    });
+  };
+
+})
+
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
 
   $scope.images = $rootScope.photoDatas;
@@ -240,7 +268,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
       var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
       $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {  
         var data = result.data.data;
-        //console.log(data);
+        console.log(result);
        var listdata = [];
        for (var i=0; i<data.length;i++){
         if(($scope.city == data[i].location.city || data[i].location.city=="" || $scope.sState == data[i].location.state || $scope.lState == data[i].location.state)  && (data[i].category != "City")){
@@ -307,7 +335,7 @@ sorter();
 
 
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=100";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=50";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
@@ -354,7 +382,7 @@ $scope.toggle = true;
 var locations = $rootScope.pageDatas;
     var myOptions = {
       center: new google.maps.LatLng(33.890542, 151.274856),
-      zoom: 8,
+      zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
 
     };

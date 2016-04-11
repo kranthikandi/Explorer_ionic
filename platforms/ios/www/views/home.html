@@ -7,20 +7,20 @@
     <input type="text" placeholder="Search" ng-model="text.city" class="tftextinput" name="q"  id= "city">
   </label>
   <ion-button class="ion-navigate locate" ng-click="centerOnMe()"></ion-button>
-  <ion-button ng-show="!toggle" ng-click="list()" class="icon ion-ios-list-outline size"></ion-button>
-    <ion-button ng-show="toggle" ng-click="showADiv('div1')" class="icon ion-map size"></ion-button>
+  <ion-button ng-show="!toggle" ng-click="list()" class="icon ion-ios-list-outline size "></ion-button>
+    <ion-button ng-show="toggle" ng-click="showADiv('div1')" class="icon ion-map size "></ion-button>
 </div>
 </form>
 </ion-nav-title>
          <ion-header-bar class="bar-subheader bar-assertive ">
 <div class="tabs border">
-              <a ng-click="sWerAbt()" class="tab-item" >
+              <a ng-click="sWerAbt()" class="tab-item subfont" >
                 Check-In
               </a>
-              <a ng-click="sLikes()" class="tab-item" >
+              <a ng-click="sLikes()" class="tab-item subfont" >
                 Likes
               </a>
-              <a ng-click="sTalkAbt()" class="tab-item" >
+              <a ng-click="sTalkAbt()" class="tab-item subfont" >
                 Talking About
               </a>
               </div>
@@ -28,11 +28,18 @@
         </ion-header-bar>
   <ion-content class="has-header has-subheader padding">
  <ion-list  ng-show="toggle"can-swipe="true" ng-repeat="pageData in pageDatas">
-        <ion-item href="#">
-        <img ng-src="{{pageData.picture}}" >
-        <h2>{{pageData.name}}</h2>
-          <ion-option-button class="button-light icon ion-images" ng-click="getPhotos(pageData.id,pageData.name,'photo')"></ion-option-button>
-          <ion-option-button class="button-light icon ion-ios-paper-outline" ng-click="getPhotos(pageData.id,pageData.name,'feed')"></ion-option-button>
+    <ion-item href="#">
+        <div class="row">
+        <div><img ng-src="{{pageData.picture}}" ></div>
+        &nbsp; &nbsp; &nbsp;
+        <div><pre style="font-family: Helvetica Neue">{{pageData.name}}</pre></div>
+        </div>
+          <ion-option-button class="button-light icon ion-images" 
+          ng-click="getPhotos(pageData.id,pageData.name,'photo')">
+          </ion-option-button>
+          <ion-option-button class="button-light icon ion-ios-paper-outline" 
+          ng-click="getPhotos(pageData.id,pageData.name,'feed')">
+          </ion-option-button>
         </ion-item>
     </ion-list>
         <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}" id="map">

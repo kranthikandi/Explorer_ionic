@@ -1,10 +1,10 @@
 /* Empty. Add your own CSS if you like */
 ion-content{
-	background-color: grey;
+	background-color: #E0E0E0;
 }
 
 .container{
-	background-color: grey;
+	background-color: #E0E0E0;
 }
 
 .scrollCanvas{
@@ -28,8 +28,9 @@ ion-content{
 .feeds{
   background-color: white;
 border-style: solid;
-padding-bottom: 10px;
-padding-top: 10px;
+padding-bottom: 5%;
+padding-top: 5%;
+padding-left: 5%;
 }
 
 .scroll {
@@ -37,18 +38,36 @@ padding-top: 10px;
 }
 
 .headers{
-  padding-bottom: 50px;
+  padding-bottom: 25%;
 }
 .locate{
-padding: 10px;
-}
-.label{
-  width: 50%;
+padding: 5%;
 }
 .size{
-  font-size: 20px;
+  font-size: 120%;
 }
 .border{
   border-color: white;
   background-color: #EF473A;
 }
+.img{
+   display: block;
+    margin: 0 auto;
+}
+.maplist{
+  float: right;
+}
+.subfont{
+  color: white;
+  font-weight: bold;
+  border-color: white;
+  padding-top: 10px;
+}
+.bar-subheader{
+  height: 30px !important;
+}
+.menuicon{
+  font-size: 120%;
+}
+
+
