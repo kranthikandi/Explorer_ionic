@@ -25,25 +25,28 @@
               </a>
               </div>
                       
-        </ion-header-bar>
-  <ion-content class="has-header has-subheader padding">
+  </ion-header-bar>
+<ion-content class="has-header has-subheader padding">
  <ion-list  ng-show="toggle"can-swipe="true" ng-repeat="pageData in pageDatas">
     <ion-item href="#">
         <div class="row">
-        <div><img ng-src="{{pageData.picture}}" ></div>
-        &nbsp; &nbsp; &nbsp;
-        <div><pre style="font-family: Helvetica Neue">{{pageData.name}}</pre></div>
-        </div>
-          <ion-option-button class="button-light icon ion-images" 
+          <div><img ng-src="{{pageData.picture}}" ></div>
+          &nbsp; &nbsp; &nbsp;
+          <div><pre class="name"><strong>{{pageData.name}}</strong></pre></div>
+          </div>
+          <div><pre class="namesize">{{pageData.about}}</pre></div>
+
+        
+          <ion-option-button class="button-light icon ion-images button-assertive" 
           ng-click="getPhotos(pageData.id,pageData.name,'photo')">
           </ion-option-button>
-          <ion-option-button class="button-light icon ion-ios-paper-outline" 
+          <ion-option-button class="button-light icon ion-ios-paper-outline button-assertive" 
           ng-click="getPhotos(pageData.id,pageData.name,'feed')">
           </ion-option-button>
-        </ion-item>
-    </ion-list>
+    </ion-item>
+ </ion-list>
         <div ng-style="{'visibility': !div1Hide ? 'visible':'hidden'}" id="map">
           <ng-map id="map" class="map"></ng-map>
         </div>
-  </ion-content>
+</ion-content>
 </ion-view>

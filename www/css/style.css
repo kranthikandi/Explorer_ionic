@@ -69,5 +69,17 @@ padding: 5%;
 .menuicon{
   font-size: 120%;
 }
+.name{
+  font-family: Helvetica Neue;
+}
+.namesize{
+  font-family: Helvetica Neue;
+  font-size: 80%;
+  text-align: justify;
+  white-space:normal !important;
+}
+
+
+
 
 

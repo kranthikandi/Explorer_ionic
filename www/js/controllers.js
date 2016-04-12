@@ -13,7 +13,7 @@ angular.module('controllers', [])
       return;
     }
 
-    $Scope.authResponse = response.authResponse;
+    $scope.authResponse = response.authResponse;
     
     getFacebookProfileInfo(authResponse)
     .then(function(profileInfo) {
@@ -193,7 +193,7 @@ console.log($scope.feeds);
           template: '<div style= "background-color:none; font-size: 30px"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></div>'
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
-         // console.log(pos);
+          console.log(pos);
           //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
          // alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude);
 var cityurl="http://maps.googleapis.com/maps/api/geocode/json?latlng="+pos.coords.latitude+","+pos.coords.longitude+"&sensor=true";
@@ -221,7 +221,8 @@ $http.get(cityurl).success(function(citydata){
 });
           
         }, function(error) {
-          alert('Unable to get location: ' + error.message);
+          console.log('Unable to get location: ' + error.message);
+          $ionicLoading.hide();
         });
         
 
@@ -265,7 +266,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
      if(success.status === 'connected'){ 
       //console.log("new sucess-- "+success.authResponse.accessToken); 
       $rootScope.aToken = success.authResponse.accessToken;
-      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
+      var url = "https://graph.facebook.com/v2.5/search?fields=id%2Cname%2Ccategory%2Clocation%2Ctalking_about_count%2Cwere_here_count%2Clikes%2Clink%2Cpicture%2Cabout%2Cphotos&limit=500&offset=0&type=place&q="+$scope.city+"&center="+$rootScope.lat+","+$rootScope.lng+"&distance=10000";
       $http.get(url, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(result) {  
         var data = result.data.data;
         console.log(result);
@@ -284,7 +285,8 @@ facebookConnectPlugin.getLoginStatus(function(success){
           city:data[i].location.city,
           lat:data[i].location.latitude,
           lng:data[i].location.longitude,
-          link:data[i].link
+          link:data[i].link,
+          about:data[i].about
           });
       }else{ 
        }
@@ -335,7 +337,7 @@ sorter();
 
 
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=50";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=10";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
@@ -382,7 +384,7 @@ $scope.toggle = true;
 var locations = $rootScope.pageDatas;
     var myOptions = {
       center: new google.maps.LatLng(33.890542, 151.274856),
-      zoom: 15,
+      zoom: 12,
       mapTypeId: google.maps.MapTypeId.ROADMAP
 
     };
