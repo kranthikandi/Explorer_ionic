@@ -158,6 +158,7 @@ facebookConnectPlugin.getLoginStatus(function(success){
 
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
   $scope.images = $rootScope.photoDatas;
+  $ionicLoading.hide();
  $scope.imagesName = $rootScope.PageName;
   //console.log($rootScope.photoDatas); 
   //console.log($scope.images);
@@ -174,8 +175,9 @@ facebookConnectPlugin.getLoginStatus(function(success){
 
 
 
-.controller('FeedCtrl',function($scope,$rootScope) {
+.controller('FeedCtrl',function($scope,$rootScope,$ionicLoading) {
 $scope.feeds = $rootScope.feedDatas;
+$ionicLoading.hide();
 $scope.pageName = $rootScope.PageName;
 //console.log($scope.feeds);
 })
@@ -406,19 +408,17 @@ var data1 = [];
     $rootScope.feedDatas = data1;
        console.log(photo);
        console.log($rootScope.feedDatas);
-      if (message == "photo" && $rootScope.photoDatas.length != 0) {
-        $ionicLoading.hide();
+      if (message == "photo" && $rootScope.photoDatas.length != 0) {       
         $state.go('app.images');
       }
       else if(message == "feed" && $rootScope.feedDatas.length != 0){
-        $ionicLoading.hide();
         $state.go('app.feeds');
       }else if($rootScope.feedDatas.length == 0){
         $ionicLoading.hide();
-        alert("there are no feeds on this page");
+        alert("There are no feeds on this page");
       }else if($rootScope.photoDatas.length == 0){
         $ionicLoading.hide();
-        alert("there are no photos uploaded to this page");
+        alert("There are no photos uploaded to this page");
       }
    }, function(error) {
                 alert("There was a problem getting photos ");

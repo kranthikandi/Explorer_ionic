@@ -15,6 +15,8 @@ angular.module('starter', ['ionic', 'controllers', 'services','ion-gallery','ngC
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+      // Show the popup immediately
+    //AppRate.promptForRating(true);
   });
 })
 
