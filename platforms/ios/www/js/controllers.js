@@ -5,6 +5,17 @@ angular.module('controllers', [])
 })
 
 .controller('WelcomeCtrl', function($scope,$rootScope, $state, $q, UserService, $ionicLoading) {
+facebookConnectPlugin.getLoginStatus(function(success){
+  $scope.loginButton = "true";
+  if(success.status === 'connected'){
+    //alert("conn bef "+$scope.loginButton);
+      $scope.loginButton = !$scope.loginButton;
+      $state.go('app.home');
+  }
+
+  });
+
+
 
   //This is the success callback from the login method
   var fbLoginSuccess = function(response) {
@@ -28,7 +39,6 @@ angular.module('controllers', [])
 
       $ionicLoading.hide();
       $state.go('app.home');
-
     }, function(fail){
       //fail get profile info
       console.log('profile info fail', fail);
@@ -147,12 +157,10 @@ angular.module('controllers', [])
 })
 
 .controller('ImgCtrl', function($scope,$rootScope, $ionicActionSheet, $state, $ionicLoading,$http){
-
   $scope.images = $rootScope.photoDatas;
  $scope.imagesName = $rootScope.PageName;
   //console.log($rootScope.photoDatas); 
   //console.log($scope.images);
-  
   $scope.slideVisible = function(index){
     if(  index < $ionicSlideBoxDelegate.currentIndex() -1 
        || index > $ionicSlideBoxDelegate.currentIndex() + 1){
@@ -167,15 +175,50 @@ angular.module('controllers', [])
 
 
 .controller('FeedCtrl',function($scope,$rootScope) {
-
-$scope.feeds = $rootScope.photoDatas;
+$scope.feeds = $rootScope.feedDatas;
 $scope.pageName = $rootScope.PageName;
-console.log($scope.feeds);
+//console.log($scope.feeds);
 })
 
 
 
 .controller('HomeCtrl', function($scope,$rootScope, UserService, $ionicActionSheet, $state, $ionicLoading,$http){
+
+navigator.geolocation.getCurrentPosition(function(pos) {
+         // console.log(pos);
+          //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+         // alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude);
+var cityurl="http://maps.googleapis.com/maps/api/geocode/json?latlng="+pos.coords.latitude+","+pos.coords.longitude+"&sensor=true";
+     //   console.log(cityurl);
+$http.get(cityurl).success(function(citydata){
+ // console.log(citydata);
+  if(citydata.status == "OK"){
+        $rootScope.lat = citydata.results[0].geometry.location.lat;
+        $rootScope.lng = citydata.results[0].geometry.location.lng;
+        $scope.city = citydata.results[0].address_components[3].long_name;
+      //  console.log($scope.lat+", "+$scope.lng+", "+$scope.city);
+        if(citydata.results[0].address_components.length == 8){
+        $scope.sState = citydata.results[0].address_components[5].short_name;
+        $scope.lState = citydata.results[0].address_components[5].long_name;
+       // console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }else if(citydata.results[0].address_components.length == 7){
+        $scope.sState = citydata.results[0].address_components[4].short_name;
+        $scope.lState = citydata.results[0].address_components[4].long_name;
+       // console.log("short_name -- "+$scope.sState+" long_name ---"+$scope.lState);
+        }
+        refresh();
+  }else{
+
+  }
+
+});
+//alert(" lat "+$rootScope.lat+" lng "+$rootScope.lng);
+          
+        }, function(error) {
+          console.log('line 226 -- Unable to get location: ' + error.message);
+          $ionicLoading.hide();
+        });
+
 	$scope.user = UserService.getUser();
   $scope.loginn = function(text) {
     $ionicLoading.show({
@@ -193,7 +236,7 @@ console.log($scope.feeds);
           template: '<div style= "background-color:none; font-size: 30px"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></div>'
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
-          console.log(pos);
+         // console.log(pos);
           //$scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
          // alert("lat-- "+pos.coords.latitude+" , lng -- "+pos.coords.longitude);
 var cityurl="http://maps.googleapis.com/maps/api/geocode/json?latlng="+pos.coords.latitude+","+pos.coords.longitude+"&sensor=true";
@@ -221,11 +264,11 @@ $http.get(cityurl).success(function(citydata){
 });
           
         }, function(error) {
-          console.log('Unable to get location: ' + error.message);
+          console.log(' line 275 -- Unable to get location: ' + error.message);
           $ionicLoading.hide();
         });
         
-
+ 
       };
 
 
@@ -302,7 +345,7 @@ sorter();
          //   
             }, function(error) {
                 alert("There was a problem getting your profile. ");
-                console.log(error);
+                console.log("line 355 -- "+error.message);
             });
      }
    });
@@ -335,9 +378,11 @@ sorter();
 
   $scope.getPhotos = function(id,name,message) {
 
-
+$ionicLoading.show({
+          template: '<div style= "background-color:none; font-size: 30px"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></div>'
+        });
 //console.log($rootScope.aToken);
-var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=10";
+var getPhotosUrl = "https://graph.facebook.com/v2.5/"+id+"/feed?fields=picture,message&limit=50";
 //alert($scope.pageDatas[i].id);
 $http.get(getPhotosUrl, { params: { access_token: $rootScope.aToken,  format: "json" }}).then(function(photos) {
 
@@ -345,26 +390,39 @@ var photo = photos.data.data;
 $rootScope.PageName = name;
 
 $rootScope.photoDatas = [];
+$rootScope.feedDatas = [];
 var data = [];
+var data1 = [];
     for (var i = 0; i < photo.length; i++) {
       data.push({
           src: photo[i].picture,
+          });
+       data1.push({
+        src: photo[i].picture,
           msg: photo[i].message
           });
     }
     $rootScope.photoDatas = data;
-      // console.log($rootScope.photoDatas);
-      if (message == "photo") {
+    $rootScope.feedDatas = data1;
+       console.log(photo);
+       console.log($rootScope.feedDatas);
+      if (message == "photo" && $rootScope.photoDatas.length != 0) {
+        $ionicLoading.hide();
         $state.go('app.images');
       }
-      else{
+      else if(message == "feed" && $rootScope.feedDatas.length != 0){
+        $ionicLoading.hide();
         $state.go('app.feeds');
+      }else if($rootScope.feedDatas.length == 0){
+        $ionicLoading.hide();
+        alert("there are no feeds on this page");
+      }else if($rootScope.photoDatas.length == 0){
+        $ionicLoading.hide();
+        alert("there are no photos uploaded to this page");
       }
-           
-
    }, function(error) {
-                alert("There was a problem getting your profile. ");
-                console.log(error);
+                alert("There was a problem getting photos ");
+                console.log("line 421  -- "+error.message);
             });
   }
 
